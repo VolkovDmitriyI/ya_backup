@@ -1,0 +1,7 @@
+# created by virtualenv automatically
+.idea
+Lib
+Scripts
+test_appsettings.json
+pyvenv.cfg
+Алгоритм работы.txt
