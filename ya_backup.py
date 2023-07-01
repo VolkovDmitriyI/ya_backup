@@ -1,4 +1,5 @@
 import os.path
+import platform
 import shutil
 import yadisk
 import telebot
@@ -9,11 +10,10 @@ from datetime import datetime
 
 class Settings:
     __slots__ = (
-        "Telegram",
         "BotApiKey",
         "TelegramChat",
-        "YaDisk",
         "YaDiskToken",
+        "YaDiskCatalog",
         "BackupCatalog",
     )
 
@@ -57,14 +57,12 @@ if not disk.check_token():
 def create_archive(path):
     if os.path.exists(path):
         dt = datetime.now()
-        archivename = path+'_'+dt.strftime('%d_%m_%Y')
+        archivename = (os.path.basename(path) + '_' + dt.strftime('%d_%m_%Y'))
         shutil.make_archive(archivename, 'zip', path)
-        disk.upload(archivename+'.zip', "/backup/"+archivename)
+        disk.upload(archivename + '.zip', Settings().YaDiskCatalog + archivename)
     else:
         send_message(f"Путь {path} не существует")
 
 
 for BackupCatalog in Settings().BackupCatalog:
     create_archive(BackupCatalog)
-
-
